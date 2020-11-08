@@ -1,0 +1,14 @@
+.campoInput{
+  position: relative;
+  width: 100%;
+  height: 50px;
+}
+
+.cartao{
+  margin-top: 40px;
+}
+
+.botaoSalvar{
+  margin-top: 25px;
+  width: 100px;
+}
