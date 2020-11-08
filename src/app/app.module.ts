@@ -14,6 +14,7 @@ import { MessageService} from 'primeng/api';
 import { PanelModule } from 'primeng/panel';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
 
 
 import { TelaPrincipalComponent } from './views/tela-principal/tela-principal.component';
@@ -43,7 +44,8 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     PanelModule,
     CheckboxModule,
-    DropdownModule
+    DropdownModule,
+    TableModule
 
   ],
   providers: [MessageService, BairroService],

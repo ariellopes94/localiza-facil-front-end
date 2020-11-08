@@ -17,4 +17,8 @@ export class FarmaciaService {
       farmacia
     );
   }
+
+  farmaciaFindAll(): Observable<Farmacia[]> {
+    return this.http.get<Farmacia[]>(`${API_CONFIG.baseUrl}/farmacia`);
+  }
 }

@@ -44,6 +44,11 @@
             <th>Prospecto</th>
             <th>Valor</th>
         </tr>
+
+        <!--  -->
+
+
+
 <!--
         <tr *ngFor="let oportunidade of oportunidades">
             <td>{{oportunidade.descricao}}</td>
@@ -54,4 +59,37 @@
 </p-panel>
 
 
+
 <p-toast></p-toast>
+
+<div >
+
+
+
+  <h5>Programmatic Control</h5>
+  <div class="p-mb-3">
+      <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" styleClass="p-button-text"></p-button>
+      <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
+      <p-button type="button" icon="pi pi-chevron-right" (click)="next()" [disabled]="isLastPage()" styleClass="p-button-text"></p-button>
+  </div>
+  <p-table [value]="customers" [paginator]="true" [rows]="rows" [showCurrentPageReport]="true" [(first)]="first"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+      <ng-template pTemplate="header">
+          <tr>
+              <th>Nome</th>
+              <th>farmacia 24 Horas</th>
+              <th>Bairro</th>
+              <th>Data Função</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-customer>
+          <tr>
+              <td>{{customer.name}}</td>
+              <td>{{customer.farmacia24Horas}}</td>
+              <td>{{customer.bairroLocalizado.name}}</td>
+              <td>{{customer.dataFundacao}}</td>
+          </tr>
+      </ng-template>
+  </p-table>
+</div>
+
