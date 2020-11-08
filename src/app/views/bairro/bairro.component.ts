@@ -34,6 +34,7 @@ export class BairroComponent implements OnInit {
   createBairro(): void {
     this.bairroService.create(this.bairro)
       .subscribe(() => {
+        this.buscarBairros()
         this.bairro = new Bairro();
         this.messageService.add({
           severity: 'success',
