@@ -18,7 +18,7 @@ const routes: Routes = [
   {
     path: 'farmacia',
     component: FarmaciaComponent
-  },
+  }
 ];
 
 @NgModule({

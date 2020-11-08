@@ -4,7 +4,7 @@ export class Farmacia{
 
   id?: number;
   name: string;
-  farmacia24Horas: boolean = false;
+  farmacia24Horas: any = false;
   bairroLocalizado: Bairro;
   dataFundacao: string;
 }

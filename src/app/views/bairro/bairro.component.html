@@ -31,6 +31,8 @@
         {{ bairro | json}}
         <div class="p-col-12 p-md-12 p-lg-12" >
           <button button pButton type="button" class="p-button-raised p-button-rounded" label="Salvar" class="botaoSalvar" (click)="createBairro()"> </button>
+          <button button pButton type="button" class="p-button-raised p-button-rounded" label="Buscar" class="botaoSalvar" (click)="buscarBairrosPorNome()" [style]="{ 'background': '#689f38', 'margin-left': '50px'}"> </button>
+          <button button pButton type="button" class="p-button-raised p-button-rounded" label="todos" class="botaoSalvar" (click)="buscarTodos()" [style]="{ 'background': '#689f38', 'margin-left': '50px'}"> </button>
         </div>
       </p-card>
     </div>
@@ -40,7 +42,21 @@
 
 
 
+<p-table [value]="customers" [paginator]="true" [rows]="rows" [showCurrentPageReport]="true" [(first)]="first"
+currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+<ng-template pTemplate="header">
+    <tr>
+        <th>Nome Bairro</th>
 
+    </tr>
+</ng-template>
+<ng-template pTemplate="body" let-customer>
+    <tr>
+        <td>{{customer.name}}</td>
+</ng-template>
+</p-table>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+</div>
 <p-toast></p-toast>
 
 

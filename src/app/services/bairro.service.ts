@@ -21,4 +21,9 @@ export class BairroService {
   bairroFindAll(): Observable<Bairro[]> {
     return this.http.get<Bairro[]>(`${API_CONFIG.baseUrl}/bairro`);
   }
+
+  findByBairroContains(nome: string): Observable<Bairro[]> {
+    return this.http.get<Bairro[]>(
+      `${API_CONFIG.baseUrl}/bairro/buscarBairro?nome=${nome}`);
+  }
 }

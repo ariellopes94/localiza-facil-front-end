@@ -1,24 +1,51 @@
 
-<br><br><br>
-{{farmacia | json}} <!--VER O CAMPO PREENCHIDO-->
-<p-panel header="Nova Farmacia">
+
+<div class="content" role="main">
+
+
+
+
+<div class="p-grid p-justify-center">
+
+    <div class="p-col-8 p-md-10 p-lg-10">
+      <p-card>
+        <p-header>
+            Header content here
+        </p-header>
+        <div class="p-col-12 p-md-12 p-lg-12">
+          <button pButton type="submit" label="adastrar" (click)="abrirCadastrar()" ><h3>C</h3></button>
+          <button pButton type="submit" label="onsultar" (click)="abrirEditar()"  [style]="{'margin-left' : '50%'}"><h3>C</h3></button>
+       </div>
+
+
+        <p-footer>
+            Footer content here
+        </p-footer>
+    </p-card>
+
+
+
+  </div>
+
+<p-panel header="Cadastrar Nova Farmacia"  *ngIf="componentView == true">
     <div class="p-grid">
-        <div class="p-col-2">Nome*</div>
+        <div class="p-col-2"><h3>Nome*</h3></div>
         <div class="p-col-10">
            <input pInputText type="text" [(ngModel)]="farmacia.name">
         </div>
 
-        <div class="p-col-4 p-md-2 p-lg-2">Farmacia 24 Horas:*</div>
+        <div class="p-col-4 p-md-2 p-lg-2"><h3>Farmacia 24 Horas*</h3></div>
         <div class="p-col-8 p-md-10 p-lg-10">
            <p-checkbox [(ngModel)]="farmacia.farmacia24Horas" binary="true" inputId="binary"></p-checkbox>
         </div>
 
-        <div class="p-col-2">Data Fundação:*</div>
+        <div class="p-col-2"><h3>Data Fundação* </h3></div>
         <div class="p-col-10">
              <input pInputText type="text" [(ngModel)]="farmacia.dataFundacao">
         </div>
 
-        <h5>Content with Filters</h5>
+        <div class="p-col-2"><h3>Localidae*</h3></div>
+        <div class="p-col-10">
         <p-dropdown [options]="bairros" [(ngModel)]="selectedBairro" optionLabel="name" [filter]="true" [showClear]="true" placeholder="Selecione bairro" (ngModelChange)="bairroSelecionado($event)">
             <ng-template pTemplate="selectedItem">
                 <div class="bairro-item bairro-item-value"  *ngIf="selectedBairro">
@@ -31,42 +58,81 @@
                 </div>
             </ng-template>
         </p-dropdown>
-
-        <div class="p-col-8 p-md-10 p-lg-10">
-           <button pButton type="submit" label="adicionar" (click)="createFarmacia()"></button>
         </div>
+        <div class="p-col-8 p-md-10 p-lg-10">
+           <button pButton type="submit" label="{{textButton}}" (click)="createFarmacia()"  [style]="alterarCorDoButton"></button>
+        </div>
+
+        <div class="p-col-8 p-md-10 p-lg-10" *ngIf="textButton == 'Atualizar'">
+          <button pButton type="submit" label="Cancelar" (click)="cancelarEdicao()" ></button>
+       </div>
     </div>
 <br>
 
-    <table border="1">
-        <tr>
-            <th>Descrição</th>
-            <th>Prospecto</th>
-            <th>Valor</th>
-        </tr>
-
-        <!--  -->
-
-
-
-<!--
-        <tr *ngFor="let oportunidade of oportunidades">
-            <td>{{oportunidade.descricao}}</td>
-            <td>{{oportunidade.nomeProspecto}}</td>
-            <td>{{oportunidade.valor}}</td>
-        </tr> -->
-    </table>
 </p-panel>
 
 
 
 <p-toast></p-toast>
 
-<div >
+<div class="container" *ngIf="componentView == false">
+  <span class="p-grid   ">
+    <div class="p-col-12 p-md-12 p-lg-10" >
+      <p-card [style]="{'margin-top': '40px'}">
+        <div class="p-field">
+        <div>
+          <h1>Consulta 1</h1>
+          <label for="username1"><h2>Nome</h2></label><br>
+          <input id="username1" type="username" aria-describedby="username1-help" pInputText [(ngModel)]="farmaciaNomeConsulta" name="nome"  class="campoInput">
+        </div>
+
+        <div class="p-col-12 p-md-12 p-lg-12" >
+          <button button pButton type="button" class="p-button-raised p-button-rounded" label="Buscar por nome" class="botaoSalvar" (click)="buscarFarmaciaPorNome()" [style]="{ 'background': '#689f38', 'margin-left': '50px'}"> </button>
+        </div>
+        </div>
+        <hr>
+        <div [style]="{'padding' : '10px'}">
+
+
+        <h1>Consulta 2</h1>
+        <div class="p-col-8 p-md-10 p-lg-10">Farmacia 24
+          <p-checkbox [(ngModel)]="farmacia24Horas" binary="true" inputId="binary"></p-checkbox>
+       </div>
+        <h5>Buscar Farmacia por Localidade</h5>
+        <p-dropdown [options]="bairros" [(ngModel)]="selectedBairroBuscar" optionLabel="name" [filter]="true" [showClear]="true" placeholder="Selecione bairro" >
+            <ng-template pTemplate="selectedItem">
+                <div class="bairro-item bairro-item-value"  *ngIf="selectedBairroBuscar">
+                    <div>{{selectedBairroBuscar.name}}</div>
+                </div>
+            </ng-template>
+            <ng-template let-bairro pTemplate="item">
+                <div class="bairro-item">
+                    <div>{{bairro.value.name}}</div>
+                </div>
+            </ng-template>
+        </p-dropdown>
+
+        <div class="p-col-12 p-md-12 p-lg-12" >
+          <button button pButton type="button" class="p-button-raised p-button-rounded" label="Buscar por Farmacia 24 horas e localidade" class="botaoSalvar" (click)="buscarFarmaciaPorLocalidade()" [style]="{ 'background': '#689f38', 'margin-left': '50px'}"> </button>
+        </div>
+      </div>
+        <hr>
+        <div [style]="{'padding' : '10px'}">
+        <h1>Consulta 3</h1>
+        <div class="p-col-12 p-md-12 p-lg-12" >
+          <button button pButton type="button" class="p-button-raised p-button-rounded" label="Buscar todos" class="botaoSalvar" (click)="buscarFarmarcias()" [style]="{ 'background': '#689f38', 'margin-left': '50px'}"> </button>
+        </div>
+      </div>
+      </p-card>
+    </div>
+  </span>
+</div>
+
+<div>
 
 
 
-  <h5>Programmatic Control</h5>
+  <h3>Resultado consulta</h3>
   <div class="p-mb-3">
       <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" styleClass="p-button-text"></p-button>
       <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
@@ -80,6 +146,7 @@
               <th>farmacia 24 Horas</th>
               <th>Bairro</th>
               <th>Data Função</th>
+              <th>Função</th>
           </tr>
       </ng-template>
       <ng-template pTemplate="body" let-customer>
@@ -88,8 +155,15 @@
               <td>{{customer.farmacia24Horas}}</td>
               <td>{{customer.bairroLocalizado.name}}</td>
               <td>{{customer.dataFundacao}}</td>
+              <td>  <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2 " (click)="editarFarmacia(customer)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteConfirm(customer.id)"></button></td>
           </tr>
       </ng-template>
   </p-table>
+  <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
 </div>
 
+
+</div>
+
+</div>
