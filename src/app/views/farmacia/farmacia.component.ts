@@ -3,7 +3,7 @@ import { BairroService } from './../../services/bairro.service';
 import { Farmacia } from './../../models/farmacia';
 import { Component, OnInit } from '@angular/core';
 import { Bairro } from 'src/app/models/bairro';
-import { ConfirmationService, MessageService} from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Message } from 'primeng/api';
 
 @Component({
@@ -19,31 +19,25 @@ export class FarmaciaComponent implements OnInit {
   alterarCorDoButton: string;
   bairros: Bairro[];
   farmaciaNomeConsulta: string;
-
-  farmacia24Horas:boolean = false;
-
+  farmacia24Horas: boolean = false;
   selectedBairro: string;
-
   selectedBairroBuscar: Farmacia;
+  displayModal = false;
+  componentView: boolean;
 
   msgs: Message[] = [];
 
-  displayModal = false;
-
-  componentView : boolean;
+  customers: Farmacia[];
+  first = 0;
+  rows = 10;
 
   constructor(private bairroService: BairroService,
-              private farmaciaService: FarmaciaService,
-              private messageService: MessageService,
-              private confirmationService: ConfirmationService) {
+    private farmaciaService: FarmaciaService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService) {
 
     this.farmacia.farmacia24Horas = false;
-   }
-
-   customers: Farmacia[];
-   first = 0;
-   rows = 10;
-
+  }
 
   ngOnInit(): void {
     this.buscarBairros();
@@ -52,7 +46,7 @@ export class FarmaciaComponent implements OnInit {
 
   }
 
-  buscarBairros():void {
+  buscarBairros(): void {
     this.bairroService.bairroFindAll().subscribe(
       (reponse) => {
         this.bairros = [];
@@ -64,44 +58,43 @@ export class FarmaciaComponent implements OnInit {
     );
   }
 
-  buscarFarmarcias():void{
+  buscarFarmarcias(): void {
     this.farmaciaService.farmaciaFindAll().subscribe(
       (reponse) => {
         this.customers = reponse;
-
-        console.log("VOLTOU DO SERVIDOR"+ reponse)
       },
       (error) => {
         console.log(error);
       })
   }
+
   bairroSelecionado(bairro: any) {
     console.log(bairro)
-   this.farmacia.bairroLocalizado = bairro;
+    this.farmacia.bairroLocalizado = bairro;
   }
 
-  createFarmacia(): void{
-
-    if(this.textButton == "Atualizar"){
+  createFarmacia(): void {
+    if (this.textButton == "Atualizar") {
       this.farmacia.farmacia24Horas = (this.farmacia.farmacia24Horas == "Sim") ? true : false;
-
       this.edit();
     }
-    else{
+    else {
       this.farmaciaService.create(this.farmacia)
-      .subscribe(() => {
-     // this.resetCamposFarmacia();
-     this.buscarBairros();
-    this.resetCamposFarmacia;
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Farmacia adicionada com sucesso'
-      });
-    },
+        .subscribe(() => {
+          this.buscarBairros();
+          this.resetCamposFarmacia();
 
-      resposta => {
+          this.buscarFarmarcias();
+          this.resetCamposFarmacia;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Farmacia adicionada com sucesso'
+          });
+        },
+
+          resposta => {
             let msg = 'Erro inesperado. Tente novamenta';
-            if(resposta.error.message){
+            if (resposta.error.message) {
               msg = resposta.error.message
             }
             this.messageService.add({
@@ -109,11 +102,11 @@ export class FarmaciaComponent implements OnInit {
               summary: msg
             });
           }
-          );
-      }
+        );
     }
+  }
 
-  deleteConfirm(id):void{
+  deleteConfirm(id): void {
     this.confirmationService.confirm({
       message: 'Essa farmacia sera deleta,deseja Continuar?',
       header: 'Confirmar delete',
@@ -129,38 +122,36 @@ export class FarmaciaComponent implements OnInit {
           { severity: 'info', summary: 'Rejected', detail: 'You have rejected' }
         ];
       }
-  });
-}
-
-  delete(id:string):void{
-    this.farmaciaService.deleteById(id)
-    .subscribe(() => {
-     this.buscarFarmarcias();
-
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Farmacia deletada com sucesso'
     });
-   },
+  }
 
-    resposta => {
+  delete(id: string): void {
+    this.farmaciaService.deleteById(id)
+      .subscribe(() => {
+        this.buscarFarmarcias();
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Farmacia deletada com sucesso'
+        });
+      },
+        resposta => {
 
           let msg = 'Erro inesperado. Tente novamenta';
 
-          if(resposta.error.message){
+          if (resposta.error.message) {
             msg = resposta.error.message
           }
-
           this.messageService.add({
             severity: 'error',
             summary: msg
           });
-         }
-         );
+        }
+      );
   }
 
-  editarFarmacia(farmacia):void{
-
+  editarFarmacia(farmacia): void {
+    this.componentView = true;
     this.alterarCorDoButton = `
     background: #689F38;
     `;
@@ -170,46 +161,43 @@ export class FarmaciaComponent implements OnInit {
     this.farmacia.farmacia24Horas = farmacia.farmacia24Horas;
     this.farmacia.dataFundacao = farmacia.dataFundacao;
     this.farmacia.bairroLocalizado = farmacia.bairroLocalizado;
-
     this.selectedBairro = farmacia.bairroLocalizado;
   }
 
-  edit():void{
+  edit(): void {
     this.farmaciaService.editById(this.farmacia)
       .subscribe(() => {
-      this.resetCamposFarmacia();
-
-      this.buscarFarmarcias();
-
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Farmacia alterada com sucesso'
-      });
-    },
-
-      resposta => {
-            let msg = 'Erro inesperado. Tente novamenta';
-            if(resposta.error.message){
-              msg = resposta.error.message
-            }
-            this.messageService.add({
-              severity: 'error',
-              summary: msg
-            });
+        this.resetCamposFarmacia();
+        this.buscarFarmarcias();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Farmacia alterada com sucesso'
+        });
+      },
+        resposta => {
+          let msg = 'Erro inesperado. Tente novamenta';
+          if (resposta.error.message) {
+            msg = resposta.error.message
           }
-          );
+          this.messageService.add({
+            severity: 'error',
+            summary: msg
+          });
+        }
+      );
   }
-  resetCamposFarmacia(){
+
+  resetCamposFarmacia() {
     this.farmacia = new Farmacia();
     this.selectedBairro = null;
   }
 
-    next() {
-      this.first = this.first + this.rows;
+  next() {
+    this.first = this.first + this.rows;
   }
 
-    prev() {
-      this.first = this.first - this.rows;
+  prev() {
+    this.first = this.first - this.rows;
   }
 
   isFirstPage(): boolean {
@@ -217,7 +205,7 @@ export class FarmaciaComponent implements OnInit {
   }
 
   isLastPage(): boolean {
-    return this.customers ? this.first === (this.customers.length - this.rows): true;
+    return this.customers ? this.first === (this.customers.length - this.rows) : true;
   }
 
   reset() {
@@ -225,33 +213,31 @@ export class FarmaciaComponent implements OnInit {
     this.first = 0;
   }
 
-  cancelarEdicao():void{
+  cancelarEdicao(): void {
     this.textButton = "Salvar";
-
     this.alterarCorDoButton = `
     background: #3f51b5;
     `;
     this.resetCamposFarmacia();
   }
 
-  buscarFarmaciaPorNome():void{
-
+  buscarFarmaciaPorNome(): void {
     this.customers = [];
-      this.farmaciaService.findByFarmaciaContains(this.farmaciaNomeConsulta).subscribe(
-        (reponse) => {
-          this.customers = reponse;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+    this.farmaciaService.findByFarmaciaContains(this.farmaciaNomeConsulta).subscribe(
+      (reponse) => {
+        this.customers = reponse;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
-  buscarFarmaciaPorLocalidade(): void{
+  buscarFarmaciaPorLocalidade(): void {
     this.customers = [];
     let bairroId: number = this.selectedBairroBuscar.id;
-  console.log(bairroId);
-    this.farmaciaService.findByBairroLocalizadoId(bairroId,this.farmacia24Horas).subscribe(
+    console.log(bairroId);
+    this.farmaciaService.findByBairroLocalizadoId(bairroId, this.farmacia24Horas).subscribe(
       (reponse) => {
         this.customers = reponse;
       },
@@ -263,11 +249,11 @@ export class FarmaciaComponent implements OnInit {
 
 
 
-  abrirCadastrar(): void{
+  abrirCadastrar(): void {
     this.componentView = true;
   }
 
-  abrirEditar(): void{
+  abrirEditar(): void {
     this.componentView = false;
   }
 

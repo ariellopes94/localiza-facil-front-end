@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class TelaPrincipalComponent implements OnInit {
 
-  title = 'localiza-facill';
+  title = 'localize fácill';
 
   constructor(private router: Router) { }
 
